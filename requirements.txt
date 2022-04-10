@@ -3,7 +3,7 @@ redis~=4.2.2
 rlgym~=1.1.0
 wandb~=0.12.14
 --find-links https://download.pytorch.org/whl/torch_stable.html
-torch~=1.11.0+cu113
+torch==1.11.0+cu113
 setuptools~=57.0.0
 pygame~=2.1.2
 keyboard~=0.13.5
