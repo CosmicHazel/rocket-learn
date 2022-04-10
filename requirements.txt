@@ -1,0 +1,17 @@
+numpy~=1.21.5
+redis~=4.2.2
+rlgym~=1.1.0
+wandb~=0.12.14
+--find-links https://download.pytorch.org/whl/torch_stable.html
+torch~=1.11.0+cu113
+setuptools~=57.0.0
+pygame~=2.1.2
+keyboard~=0.13.5
+gym~=0.23.1
+numba~=0.55.1
+tqdm~=4.64.0
+cloudpickle~=1.6.0
+msgpack~=1.0.3
+psutil~=5.9.0
+plotly~=5.7.0
+trueskill~=0.4.5
