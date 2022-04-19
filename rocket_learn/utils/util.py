@@ -15,7 +15,8 @@ from rocket_learn.agent.policy import Policy
 from rocket_learn.agent.pretrained_policy import PretrainedDiscretePolicy, HardcodedAgent
 
 from rocket_learn.experience_buffer import ExperienceBuffer
-from rlgym.utils.terminal_conditions.common_conditions import GoalScoredCondition, NoTouchTimeoutCondition
+from rlgym.utils.terminal_conditions.common_conditions import GoalScoredCondition, NoTouchTimeoutCondition, \
+    TimeoutCondition
 
 
 def generate_episode(env: Gym, policies, evaluate=False) -> (List[ExperienceBuffer], int):
@@ -30,7 +31,8 @@ def generate_episode(env: Gym, policies, evaluate=False) -> (List[ExperienceBuff
         game_condition = GameCondition(tick_skip=env._match._tick_skip,
                                        forfeit_spg_limit=10 * env._match._team_size)  # noqa
         no_touch_condition = NoTouchTimeoutCondition(round(20 * 120 / env._match._tick_skip))
-        env._match._terminal_conditions = [game_condition, GoalScoredCondition(), no_touch_condition]  # noqa
+        timeout_condition = TimeoutCondition(round(300 * 120 / env._match._tick_skip))
+        env._match._terminal_conditions = [game_condition, GoalScoredCondition(), no_touch_condition, timeout_condition]  # noqa
         env._match._state_setter = DefaultState()  # noqa
         env._match._reward_fn = ConstantReward()  # noqa Save some cpu cycles
 
@@ -126,6 +128,8 @@ def generate_episode(env: Gym, policies, evaluate=False) -> (List[ExperienceBuff
                 elif game_condition.done:  # noqa
                     break
                 elif no_touch_condition.steps >= no_touch_condition.max_steps: # noqa
+                    break
+                elif timeout_condition.steps >= timeout_condition.max_steps: # noqa
                     break
                 else:
                     observations, info = env.reset(return_info=True)
